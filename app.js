@@ -132,7 +132,8 @@ if (S.location.show) {
     html: `<section class="block" id="location"><div class="wrap">
       ${head("📍", S.location.title)}
       <div class="loc">
-        ${S.location.showMap ? `<div class="map reveal"><iframe loading="lazy" src="https://maps.google.com/maps?q=${q}&z=16&output=embed" title="지도"></iframe></div>` : ""}
+        ${S.location.mapImage ? `<a class="map map-img reveal" href="https://map.naver.com/p/search/${q}" target="_blank" rel="noopener" title="네이버지도에서 크게 보기"><img src="${esc(S.location.mapImage)}" alt="${esc(S.name)} 오시는 길 약도"><span class="map-tip">눌러서 지도 앱으로 보기</span></a>` : S.location.showMap ? `<div class="map map-live reveal"><iframe loading="lazy" src="https://maps.google.com/maps?q=${q}&z=17&output=embed" title="지도"></iframe>
+          <div class="map-bubble" aria-hidden="true"><span class="mb-sun">☀️</span><span class="mb-cloud">☁️</span>${S.location.mapLabel ? `<small>${esc(S.location.mapLabel)}</small>` : ""}<b>${esc(S.name)}</b><span class="mb-sprout">🌱</span></div></div>` : ""}
         <div class="loc-info reveal">
           <div class="loc-row"><small>주소</small><b>${esc(S.address)}</b></div>
           <div class="loc-row"><small>전화</small><b>${esc(S.phone)}</b></div>
