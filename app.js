@@ -116,6 +116,7 @@ if (S.location.show) {
         <div class="loc-info reveal">
           <div class="loc-row"><small>주소</small><b>${esc(S.address)}</b></div>
           <div class="loc-row"><small>전화</small><b>${esc(S.phone)}</b></div>
+          ${S.fax ? `<div class="loc-row"><small>팩스</small><b>${esc(S.fax)}</b></div>` : ""}
           <div class="map-links">
             <a href="https://map.kakao.com/?q=${q}" target="_blank" rel="noopener">카카오맵으로 보기</a>
             <a href="https://map.naver.com/p/search/${q}" target="_blank" rel="noopener">네이버지도로 보기</a>
@@ -139,7 +140,7 @@ document.getElementById("brandSub").textContent = S.subName;
 if (S.logo) document.getElementById("brandLogo").innerHTML = `<img src="${esc(S.logo)}" alt="">`;
 
 document.getElementById("footName").textContent = S.name;
-document.getElementById("footInfo").innerHTML = `${esc(S.address)}<br>☎ ${esc(S.phone)}`;
+document.getElementById("footInfo").innerHTML = `${esc(S.address)}<br>☎ ${esc(S.phone)}${S.fax ? ` · 팩스 ${esc(S.fax)}` : ""}`;
 document.getElementById("footCopy").textContent = `© ${new Date().getFullYear()} ${S.name}`;
 const linkNames = { blog: "블로그", instagram: "인스타그램", cafe: "카페·밴드", waitlist: "입소대기 신청" };
 document.getElementById("footLinks").innerHTML = Object.entries(S.links)
