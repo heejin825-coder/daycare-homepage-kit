@@ -88,11 +88,11 @@ const SITE = {
     text: "숲에서 별이 될 때까지, 아이들은 한 해 한 해 자라며 다음 반으로 나아갑니다.",
     // photo 에 교실 사진을 넣으면 사진이, "" 로 비우면 아이콘이 나옵니다
     items: [
-      { icon: "🌳", name: "하늘숲반", age: "1세", text: "숲처럼 포근한 품에서 세상과 처음 만나고, 첫걸음을 내딛어요.", photo: "" },
-      { icon: "☁️", name: "하늘꿈반", age: "2세", text: "마음속에 작은 꿈을 품고, 하고 싶은 것이 많아지는 시간이에요.", photo: "" },
-      { icon: "💧", name: "하늘샘반", age: "3세", text: "샘물처럼 솟아나는 궁금함으로 스스로 해 보는 힘을 길러요.", photo: "" },
-      { icon: "🌈", name: "하늘빛반", age: "4세", text: "저마다의 빛깔로 생각과 마음을 표현하며 친구와 어울려요.", photo: "" },
-      { icon: "⭐", name: "하늘별반", age: "5세", text: "별처럼 반짝이는 자신감으로 더 넓은 세상을 향해 꿈을 펼쳐요.", photo: "" },
+      { icon: "🌳", name: "하늘숲반", age: "1세", text: "숲처럼 포근한 품에서 세상과 처음 만나고, 첫걸음을 내딛어요.", photo: "images/class-soop.jpg" },
+      { icon: "☁️", name: "하늘꿈반", age: "2세", text: "마음속에 작은 꿈을 품고, 하고 싶은 것이 많아지는 시간이에요.", photo: "images/class-kkum.jpg" },
+      { icon: "💧", name: "하늘샘반", age: "3세", text: "샘물처럼 솟아나는 궁금함으로 스스로 해 보는 힘을 길러요.", photo: "images/class-saem.jpg" },
+      { icon: "🌈", name: "하늘빛반", age: "4세", text: "저마다의 빛깔로 생각과 마음을 표현하며 친구와 어울려요.", photo: "images/class-bit.jpg" },
+      { icon: "⭐", name: "하늘별반", age: "5세", text: "별처럼 반짝이는 자신감으로 더 넓은 세상을 향해 꿈을 펼쳐요.", photo: "images/class-byeol.jpg" },
     ],
   },
 
