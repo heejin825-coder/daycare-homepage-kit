@@ -95,8 +95,7 @@ section.block:nth-of-type(even) { background: var(--bg-alt); }
 /* 소개 */
 .about { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: center; }
 .about-photo { position: relative; }
-.about-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 60% center; border-radius: 160px 160px 28px 28px; }
-.about-photo::before { content: ""; position: absolute; inset: 22px -22px -22px 22px; border: 2px dashed var(--point); border-radius: 160px 160px 28px 28px; z-index: -1; }
+.about-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 60% center; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.10); }
 .about h3 { font-weight: 800; font-size: clamp(24px, 3vw, 32px); line-height: 1.45; white-space: pre-line; color: var(--text); }
 .about .greet { margin-top: 20px; color: var(--text-soft); white-space: pre-line; }
 .about .sign { margin-top: 18px; text-align: right; font-weight: 800; font-size: 19px; color: var(--main); }
@@ -225,8 +224,7 @@ footer b { font-weight: 800; font-size: 22px; color: #fff; }
   .day-photos img { height: 220px; border-radius: 20px; }
   .day-photos img:nth-child(2) { margin-top: 30px; height: 190px; }
   .about, .enroll, .loc { grid-template-columns: 1fr; gap: 36px; }
-  .about-photo img, .about-photo::before { aspect-ratio: 16 / 10; border-radius: 90px 90px 22px 22px; }
-  .about-photo::before { inset: 14px -10px -14px 10px; }
+  .about-photo img { aspect-ratio: 16 / 10; border-radius: 20px; }
   .routine::before { left: 74px; }
   .r-item { grid-template-columns: 58px 32px 1fr; }
   .r-time { font-size: 17px; }
