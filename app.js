@@ -55,7 +55,7 @@ if (S.facility && S.facility.show) sections.push({
   id: "facility", menu: S.facility.title,
   html: `<section class="block" id="facility"><div class="wrap">
     ${head("🏫", S.facility.title, S.facility.text)}
-    <div class="stories">${S.facility.items.map((it) => `<div class="story reveal" data-src="${esc(it.photo)}" data-text="${esc(it.name)}">
+    <div class="stories facility-grid">${S.facility.items.map((it) => `<div class="story reveal" data-src="${esc(it.photo)}" data-text="${esc(it.name)}">
       <img src="${esc(it.photo)}" alt="${esc(it.name)}"><p><b>${esc(it.name)}</b>${it.text ? `<br><small>${esc(it.text)}</small>` : ""}</p></div>`).join("")}</div>
   </div></section>`,
 });
