@@ -126,16 +126,16 @@ if (S.enroll.show) sections.push({
 });
 
 if (S.location.show) {
-  const q = encodeURIComponent(S.address);
+  const q = encodeURIComponent(S.location.mapPlace ? `서귀포 ${S.location.mapPlace}` : S.address);
   sections.push({
     id: "location", menu: S.location.title,
     html: `<section class="block" id="location"><div class="wrap">
       ${head("📍", S.location.title)}
       <div class="loc">
         ${S.location.mapImage ? `<a class="map map-img reveal" href="https://map.naver.com/p/search/${q}" target="_blank" rel="noopener" title="네이버지도에서 크게 보기"><img src="${esc(S.location.mapImage)}" alt="${esc(S.name)} 오시는 길 약도"><span class="map-tip">눌러서 지도 앱으로 보기</span></a>` : S.location.showMap ? `<div class="map map-live reveal"><iframe loading="lazy" src="https://maps.google.com/maps?q=${q}&z=17&output=embed" title="지도"></iframe>
-          <div class="map-bubble" aria-hidden="true"><span class="mb-sun">☀️</span><span class="mb-cloud">☁️</span>${S.location.mapLabel ? `<small>${esc(S.location.mapLabel)}</small>` : ""}<b>${esc(S.name)}</b><span class="mb-sprout">🌱</span></div></div>` : ""}
+          <div class="map-bubble" aria-hidden="true"><span class="mb-sun">☀️</span><span class="mb-cloud">☁️</span>${S.location.mapLabel ? `<small>${esc(S.location.mapLabel)}</small>` : ""}<b>${esc(S.name)}</b>${S.location.mapPlaceNote ? `<em>${esc(S.location.mapPlaceNote)}</em>` : ""}<span class="mb-sprout">🌱</span></div></div>` : ""}
         <div class="loc-info reveal">
-          <div class="loc-row"><small>주소</small><b>${esc(S.address)}</b></div>
+          <div class="loc-row"><small>주소</small><b>${esc(S.address)}</b>${S.location.mapPlaceNote ? `<span class="loc-note">${esc(S.location.mapPlaceNote)}</span>` : ""}</div>
           <div class="loc-row"><small>전화</small><b>${esc(S.phone)}</b></div>
           ${S.fax ? `<div class="loc-row"><small>팩스</small><b>${esc(S.fax)}</b></div>` : ""}
           <div class="map-links">

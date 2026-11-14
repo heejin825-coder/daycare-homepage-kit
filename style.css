@@ -163,6 +163,8 @@ section.block:nth-of-type(even) .r-dot { border-color: var(--bg-alt); }
 .map-live iframe { min-height: 420px; }
 .map-bubble { position: absolute; left: 50%; top: calc(50% - 48px); transform: translate(-50%, -100%); pointer-events: none; background: #fff; border: 4px solid #f6c445; border-radius: 26px; padding: 18px 22px 10px; text-align: center; box-shadow: 0 6px 18px rgba(0,0,0,.18); white-space: nowrap; font-weight: 800; line-height: 1.25; }
 .map-bubble::after { content: ""; position: absolute; left: 50%; bottom: -16px; transform: translateX(-50%) rotate(45deg); width: 22px; height: 22px; background: #fff; border-right: 4px solid #f6c445; border-bottom: 4px solid #f6c445; }
+.map-bubble em { display: block; font-style: normal; font-size: 12.5px; color: #6b6b6b; margin-top: 2px; }
+.loc-note { display: block; margin-top: 4px; font-size: 15px; color: var(--main); font-weight: 700; }
 .map-bubble small { display: block; font-size: 15px; color: #8a4b12; }
 .map-bubble b { display: block; font-weight: 800; font-size: 20px; color: #1f5fa8; }
 .map-bubble .mb-sun { position: absolute; top: -22px; left: 50%; transform: translateX(-20%); font-size: 24px; }
