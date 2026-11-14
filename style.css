@@ -98,6 +98,12 @@ section.block:nth-of-type(even) { background: var(--bg-alt); }
 .about-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 60% center; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.10); }
 .about h3 { font-weight: 800; font-size: clamp(24px, 3vw, 32px); line-height: 1.45; white-space: pre-line; color: var(--text); }
 .about .greet { margin-top: 20px; color: var(--text-soft); white-space: pre-line; }
+.insta-wrap { margin-top: 16px; text-align: right; }
+.insta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 99px; color: #fff; font-weight: 700; font-size: 16px; background: linear-gradient(45deg, #f9a03f, #e1306c 55%, #833ab4); box-shadow: 0 6px 16px rgba(225,48,108,.25); transition: transform .2s; }
+.insta-btn:hover { transform: translateY(-2px); }
+.insta-btn small { font-weight: 400; opacity: .9; font-size: 14px; }
+.insta-btn { white-space: nowrap; }
+@media (max-width: 480px) { .insta-btn small { display: none; } }
 .about .sign { margin-top: 18px; text-align: right; font-weight: 800; font-size: 19px; color: var(--main); }
 .highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 30px; }
 .hl { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px 14px; text-align: center; }

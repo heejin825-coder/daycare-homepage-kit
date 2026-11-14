@@ -167,7 +167,7 @@ const SITE = {
   /* ---------- 맨 아래 링크 (없으면 "" 로) ---------- */
   links: {
     blog: "",        // 네이버 블로그
-    instagram: "",   // 인스타그램
+    instagram: "https://www.instagram.com/seogwipo_sky3364/",   // 인스타그램
     cafe: "",        // 네이버 카페 / 밴드
     waitlist: "https://www.childcare.go.kr",   // 임신육아종합포털 아이사랑 (입소대기)
   },

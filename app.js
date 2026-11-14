@@ -45,6 +45,7 @@ if (S.about.show) sections.push({
         <h3>${esc(S.about.headline)}</h3>
         <p class="greet">${esc(S.about.greeting)}</p>
         <p class="sign">— ${esc(S.about.sign)}</p>
+        ${S.links.instagram ? `<div class="insta-wrap"><a class="insta-btn" href="${esc(S.links.instagram)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>인스타그램에서 더 보기 <small>@${esc(S.links.instagram.replace(/\/+$/, "").split("/").pop())}</small></a></div>` : ""}
         <div class="highlights">${S.about.highlights.map((h) => `<div class="hl"><b>${esc(h.big)}</b><span>${esc(h.small)}</span></div>`).join("")}</div>
       </div>
     </div>
