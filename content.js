@@ -23,6 +23,8 @@ const SITE = {
   address: "제주특별자치도 서귀포시 서호남로 25 1층",
   description: "숲에서 별이 될 때까지 아이와 함께 자라는 곳, 공립 서귀포하늘어린이집입니다.", // 카톡·검색에 보이는 소개
 
+  sparkle: true,   // 마우스를 움직이면 별·반짝이가 따라다녀요 (끄려면 false)
+
   /* ---------- 맨 위 큰 사진 ---------- */
   hero: {
     photo: "images/building.jpg",

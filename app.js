@@ -196,3 +196,33 @@ document.querySelectorAll(".story, .prog.zoom").forEach((el) => el.addEventListe
 }));
 lb.addEventListener("click", () => lb.classList.remove("open"));
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") lb.classList.remove("open"); });
+
+/* ---------- 마우스 반짝이 (content.js 의 sparkle: true 일 때) ---------- */
+if (S.sparkle && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const shapes = ["★", "✦", "✧", "⋆", "✨"];
+  const colors = ["#f6c445", "#ffd86b", "#ff9fb8", "#9fd3ff", "#b8e986", "#ffffff"];
+  let last = 0, count = 0;
+  const spark = (x, y, burst) => {
+    if (count > 60) return;
+    const el = document.createElement("span");
+    el.className = "sparkle";
+    el.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+    const size = 14 + Math.random() * 16;
+    const ang = Math.random() * Math.PI * 2, dist = (burst ? 40 : 18) + Math.random() * (burst ? 40 : 26);
+    el.style.cssText = `left:${x}px;top:${y}px;font-size:${size}px;color:${colors[Math.floor(Math.random() * colors.length)]};` +
+      `--dx:${Math.cos(ang) * dist}px;--dy:${Math.sin(ang) * dist + 14}px;--rot:${(Math.random() - .5) * 240}deg;animation-duration:${700 + Math.random() * 500}ms`;
+    document.body.appendChild(el);
+    count++;
+    el.addEventListener("animationend", () => { el.remove(); count--; });
+  };
+  window.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    const now = performance.now();
+    if (now - last < 25) return;
+    last = now;
+    spark(e.clientX, e.clientY, false);
+  }, { passive: true });
+  window.addEventListener("pointerdown", (e) => {
+    for (let i = 0; i < 8; i++) spark(e.clientX, e.clientY, true);
+  }, { passive: true });
+}
