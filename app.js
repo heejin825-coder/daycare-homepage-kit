@@ -226,3 +226,56 @@ if (S.sparkle && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
     for (let i = 0; i < 8; i++) spark(e.clientX, e.clientY, true);
   }, { passive: true });
 }
+
+/* ---------- 양육상담 챗봇 하늘이 ---------- */
+if (S.chatbot && S.chatbot.show && S.chatbot.link) {
+  const bot = document.createElement("div");
+  bot.className = "haneul";
+  bot.innerHTML = `<a class="haneul-link" href="${esc(S.chatbot.link)}" target="_blank" rel="noopener" aria-label="양육상담 챗봇 하늘이 열기">
+      <span class="haneul-bubble">${esc(S.chatbot.message)}</span>
+      <img src="${esc(S.chatbot.image)}" alt="하늘이">
+    </a>
+    <button class="haneul-close" type="button" aria-label="하늘이 숨기기">×</button>`;
+  document.body.appendChild(bot);
+  bot.querySelector(".haneul-close").addEventListener("click", () => bot.remove());
+
+  const still = !S.chatbot.roam || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const place = (x, y) => { bot.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`; };
+  const home = () => {
+    const r = bot.getBoundingClientRect();
+    return [window.innerWidth - r.width - 16, window.innerHeight - r.height - 16];
+  };
+  const bubbleH = () => bot.querySelector(".haneul-bubble").offsetHeight + 12;
+  const start = () => {
+    bot.style.transition = "none";
+    place(...home());
+    requestAnimationFrame(() => requestAnimationFrame(() => { bot.style.transition = ""; bot.classList.add("on"); }));
+  };
+  const img = bot.querySelector("img");
+  if (img.complete) start(); else { img.addEventListener("load", start); img.addEventListener("error", start); }
+
+  if (still) {
+    window.addEventListener("resize", () => place(...home()));
+  } else {
+    let paused = false, timer;
+    const wander = () => {
+      clearTimeout(timer);
+      if (!paused && bot.isConnected) {
+        const r = bot.getBoundingClientRect();
+        const maxX = Math.max(8, window.innerWidth - r.width - 8);
+        const minY = 80 + bubbleH();
+        const maxY = Math.max(minY, window.innerHeight - r.height - 8);
+        const x = 8 + Math.random() * (maxX - 8);
+        const y = minY + Math.random() * (maxY - minY);
+        bot.classList.toggle("flip", x < (parseFloat(bot.dataset.x) || 0));
+        bot.dataset.x = x;
+        place(x, y);
+      }
+      timer = setTimeout(wander, 5000 + Math.random() * 2500);
+    };
+    bot.addEventListener("pointerenter", () => { paused = true; bot.classList.add("hold"); });
+    bot.addEventListener("pointerleave", () => { paused = false; bot.classList.remove("hold"); timer = setTimeout(wander, 1500); });
+    window.addEventListener("resize", wander);
+    timer = setTimeout(wander, 2500);
+  }
+}

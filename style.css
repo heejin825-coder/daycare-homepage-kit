@@ -243,3 +243,23 @@ footer b { font-weight: 800; font-size: 22px; color: #fff; }
   20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(calc(var(--rot) * .3)); }
   100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.4) rotate(var(--rot)); }
 }
+
+/* 양육상담 챗봇 하늘이 */
+.haneul { position: fixed; left: 0; top: 0; z-index: 90; width: 150px; opacity: 0; transition: transform 4.5s cubic-bezier(.45,.05,.35,1), opacity .6s; will-change: transform; }
+.haneul.on { opacity: 1; }
+.haneul.hold { transition: opacity .6s; }
+.haneul-link { display: block; cursor: pointer; }
+.haneul img { width: 100%; height: auto; display: block; filter: drop-shadow(0 8px 14px rgba(0,0,0,.18)); animation: haneul-bob 2.4s ease-in-out infinite; transition: transform .25s; }
+.haneul.flip img { transform: scaleX(-1); }
+.haneul-link:hover img { animation-play-state: paused; transform: scale(1.08); }
+.haneul.flip .haneul-link:hover img { transform: scaleX(-1) scale(1.08); }
+.haneul-bubble { position: absolute; bottom: calc(100% - 4px); left: 50%; transform: translateX(-50%); background: #fff; color: var(--text); border: 3px solid #5aa9f0; border-radius: 18px; padding: 8px 12px; font-size: 13.5px; font-weight: 700; line-height: 1.35; text-align: center; white-space: pre-line; width: max-content; max-width: 190px; box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+.haneul-bubble::after { content: ""; position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: #fff; border-right: 3px solid #5aa9f0; border-bottom: 3px solid #5aa9f0; }
+.haneul-close { position: absolute; top: 4px; right: -4px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: rgba(0,0,0,.55); color: #fff; font-size: 16px; line-height: 24px; cursor: pointer; opacity: 0; transition: opacity .2s; }
+.haneul:hover .haneul-close, .haneul:focus-within .haneul-close { opacity: 1; }
+@keyframes haneul-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@media (max-width: 860px) {
+  .haneul { width: 104px; }
+  .haneul-bubble { font-size: 12px; padding: 6px 9px; max-width: 150px; }
+  .haneul-close { opacity: 1; width: 22px; height: 22px; line-height: 22px; }
+}

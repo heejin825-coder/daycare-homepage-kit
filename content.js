@@ -25,6 +25,15 @@ const SITE = {
 
   sparkle: true,   // 마우스를 움직이면 별·반짝이가 따라다녀요 (끄려면 false)
 
+  /* ---------- 양육상담 챗봇 하늘이 (화면을 돌아다니는 캐릭터) ---------- */
+  chatbot: {
+    show: true,
+    image: "images/haneul.webp",
+    link: "https://gemini.google.com/gem/5c075ddf9d17?usp=sharing",
+    message: "양육 고민, 하늘이에게\n물어보세요! 💬",
+    roam: true,   // 화면을 천천히 돌아다녀요 (false 면 오른쪽 아래에 가만히)
+  },
+
   /* ---------- 맨 위 큰 사진 ---------- */
   hero: {
     photo: "images/building.jpg",
