@@ -170,6 +170,10 @@ footer b { font-family: "Jua", sans-serif; font-weight: 400; font-size: 22px; co
 .f-links a:hover { background: #4a443d; }
 .copy { margin-top: 10px; opacity: .6; font-size: 13px; }
 
+.class-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px; }
+.class-grid .prog-img { height: 150px; }
+.class-age { display: inline-block; margin-left: 4px; padding: 2px 10px; border-radius: 99px; background: var(--main-soft); color: var(--main); font-size: 14px; vertical-align: middle; }
+
 /* 메뉴가 많아 한 줄에 다 안 들어가는 화면에서는 ☰ 메뉴 단추로 바꿈 */
 @media (max-width: 1100px) {
   .menu-btn { display: block; }

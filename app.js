@@ -60,6 +60,17 @@ if (S.facility && S.facility.show) sections.push({
   </div></section>`,
 });
 
+if (S.classes && S.classes.show) sections.push({
+  id: "classes", menu: "반 소개",
+  html: `<section class="block" id="classes"><div class="wrap">
+    ${head("🏷️", S.classes.title, S.classes.text)}
+    <div class="programs class-grid">${S.classes.items.map((c) => `<div class="prog reveal">
+      <div class="prog-img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)} 교실">` : esc(c.icon)}</div>
+      <div class="prog-body"><h4>${esc(c.icon)} ${esc(c.name)} <span class="class-age">${esc(c.age)}</span></h4><p>${esc(c.text)}</p></div>
+    </div>`).join("")}</div>
+  </div></section>`,
+});
+
 if (S.edu.show) sections.push({
   id: "edu", menu: S.edu.title,
   html: `<section class="block" id="edu"><div class="wrap">
