@@ -19,7 +19,7 @@ sections.push({
       <p>${esc(S.hero.text)}</p>
       <div class="hero-btns">
         ${S.enroll.show ? `<a class="btn btn-main" href="#enroll">${esc(S.hero.button1)} 🌿</a>` : ""}
-        ${S.story.show ? `<a class="btn btn-ghost" href="#story">${esc(S.hero.button2)} ♡</a>` : ""}
+        ${S.facility && S.facility.show ? `<a class="btn btn-ghost" href="#facility">${esc(S.hero.button2)} ♡</a>` : S.story.show ? `<a class="btn btn-ghost" href="#story">${esc(S.hero.button2)} ♡</a>` : ""}
       </div>
     </div>
     <a class="scroll-hint" href="#${S.day.show ? "day" : "about"}" aria-label="아래로">⌄</a>

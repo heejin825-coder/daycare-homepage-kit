@@ -25,16 +25,16 @@ const SITE = {
 
   /* ---------- 맨 위 큰 사진 ---------- */
   hero: {
-    photo: "images/hero.jpg",
+    photo: "images/building.jpg",
     title: "숲에서 별이 될 때까지\n아이와 함께 자라는 곳",   // \n 은 줄바꿈
     text: "오늘도 아이들은 웃고, 놀고, 배우며\n자신만의 속도로 자랍니다.",
     button1: "입학 안내",
-    button2: "우리 이야기",
+    button2: "시설 둘러보기",
   },
 
   /* ---------- 우리의 하루 (사진 2장) ---------- */
   day: {
-    show: true,
+    show: false,
     title: "우리의 하루",
     text: "작은 손으로 흙을 만지고, 친구와 함께 웃으며,\n자연 속에서 배우는 하루.",
     photos: ["images/day1.jpg", "images/day2.jpg"],
@@ -49,7 +49,7 @@ const SITE = {
   about: {
     show: true,
     title: "어린이집 소개",
-    photo: "images/building.jpg",
+    photo: "images/playground.jpg",
     headline: "아이와 부모, 지역이 함께 자라는 곳,\n서귀포하늘어린이집입니다.",
     greeting:
       "서귀포하늘어린이집 홈페이지를 찾아 주신 여러분, 반갑습니다.\n" +
@@ -98,7 +98,7 @@ const SITE = {
 
   /* ---------- 교육 이야기 (특색 프로그램) ---------- */
   edu: {
-    show: true,
+    show: false,
     title: "교육 이야기",
     quote: "놀이는 아이의 본능이고, 아이들은 놀이하며 배우고 자랍니다.",
     text: "영유아·놀이중심의 표준보육과정을 바탕으로, 아이의 흥미와 관심에서 출발한 놀이 속에서 자연스럽게 배움이 일어나도록 하루를 꾸립니다.",
@@ -113,7 +113,7 @@ const SITE = {
 
   /* ---------- 하루 일과 ---------- */
   routine: {
-    show: true,
+    show: false,
     title: "우리의 하루 일과",
     items: [
       { time: "07:30", name: "등원 및 맞이하기", text: "선생님과 반갑게 인사하며 하루를 열어요" },
@@ -128,7 +128,7 @@ const SITE = {
 
   /* ---------- 오늘의 풍경 (활동 사진) ---------- */
   story: {
-    show: true,
+    show: false,
     title: "오늘의 풍경",
     // 사진을 더 넣고 싶으면 { photo: "...", text: "..." }, 한 줄을 복사해 붙이세요
     items: [
