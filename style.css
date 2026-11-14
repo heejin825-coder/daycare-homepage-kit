@@ -44,6 +44,9 @@ header.solid .brand-name { color: var(--main); text-shadow: none; }
 nav ul { display: flex; gap: 6px; list-style: none; }
 nav a { display: block; padding: 8px 14px; border-radius: 99px; color: #fff; font-size: 16px; text-shadow: 0 1px 6px rgba(0,0,0,.35); transition: background .2s, color .2s; }
 nav a:hover { background: rgba(255,255,255,.2); }
+nav a { white-space: nowrap; }
+@media (min-width: 1101px) and (max-width: 1340px) { nav ul { gap: 0; } nav a { padding: 8px 9px; font-size: 15px; } }
+}
 header.solid nav a { color: var(--text); text-shadow: none; }
 header.solid nav a:hover { background: var(--main-soft); color: var(--main); }
 .menu-btn { display: none; background: none; border: 0; font-size: 28px; color: #fff; cursor: pointer; width: 44px; height: 44px; }
@@ -166,6 +169,15 @@ footer b { font-family: "Jua", sans-serif; font-weight: 400; font-size: 22px; co
 .f-links a { padding: 8px 16px; border: 1px solid #6a6258; border-radius: 99px; }
 .f-links a:hover { background: #4a443d; }
 .copy { margin-top: 10px; opacity: .6; font-size: 13px; }
+
+/* 메뉴가 많아 한 줄에 다 안 들어가는 화면에서는 ☰ 메뉴 단추로 바꿈 */
+@media (max-width: 1100px) {
+  .menu-btn { display: block; }
+  nav { position: fixed; top: 72px; left: 0; right: 0; background: var(--bg); box-shadow: 0 10px 20px rgba(0,0,0,.08); display: none; }
+  nav.open { display: block; }
+  nav ul { flex-direction: column; padding: 10px 16px 18px; gap: 2px; }
+  nav a, header.solid nav a { color: var(--text); text-shadow: none; padding: 12px 14px; }
+
 
 /* 휴대폰 화면 */
 @media (max-width: 860px) {
