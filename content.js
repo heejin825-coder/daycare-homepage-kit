@@ -49,7 +49,7 @@ const SITE = {
   about: {
     show: true,
     title: "어린이집 소개",
-    photo: "images/about.jpg",
+    photo: "images/building.jpg",
     headline: "행복한 아이들이 있는 곳,\n여기는 서귀포하늘어린이집입니다.",
     greeting:
       "아이들은 놀이를 통해 배우고, 손으로 만지고 몸으로 느끼는 경험 속에서 스스로 생각하며 자랍니다.\n" +
