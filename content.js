@@ -112,7 +112,7 @@ const SITE = {
     // photos 에 교실 사진을 여러 장 넣을 수 있어요 (카드에서 차례로 바뀌고, 누르면 넘겨 볼 수 있어요)
     // 사진이 없으면 photos: [] 로 비우면 아이콘이 나옵니다
     items: [
-      { icon: "🌿", name: "하늘숲반", age: "1세", text: "숲처럼 포근한 첫 교실", photos: ["images/class-soop.jpg"] },
+      { icon: "🌿", name: "하늘숲반", age: "1세", text: "숲처럼 포근한 첫 교실", photos: ["images/class-soop-1.jpg", "images/class-soop-2.jpg"] },
       { icon: "🌱", name: "하늘꿈반", age: "2세", text: "작은 꿈이 싹트는 교실", photos: ["images/class-kkum-1.jpg", "images/class-kkum-2.jpg"] },
       { icon: "💧", name: "하늘샘반", age: "3세", text: "샘물처럼 궁금증이 퐁퐁 솟는 교실", photos: ["images/class-saem.jpg"] },
       { icon: "🌈", name: "하늘빛반", age: "4세", text: "저마다의 빛깔로 빛나는 교실", photos: ["images/class-bit.jpg"] },
