@@ -113,14 +113,17 @@ if (on("facility")) {
 /* ---------- 반 소개 ---------- */
 if (on("classes")) {
   const c = S.classes;
+  const pics = (it) => it.photos || (it.photo ? [it.photo] : []);
   sections.push({
     id: "classes", menu: "반 소개",
     html: `<section class="block bg-mint" id="classes"><div class="wrap">
       ${head(c.label, c.title, c.text)}
-      <div class="cards">${c.items.map((it) => `<div class="card reveal${it.photo ? " zoom" : ""}" data-src="${esc(it.photo)}" data-text="${esc(it.name)} (${esc(it.age)})">
-        <div class="card-img">${it.photo ? `<img src="${esc(it.photo)}" alt="${esc(it.name)} 교실">` : `<span class="card-icon">${esc(it.icon)}</span>`}</div>
+      <div class="cards">${c.items.map((it) => { const ps = pics(it); return `<div class="card reveal${ps.length ? " zoom" : ""}" data-photos="${esc(JSON.stringify(ps))}" data-text="${esc(it.name)} (${esc(it.age)})">
+        <div class="card-img${ps.length > 1 ? " slides" : ""}">${ps.length ? ps.map((p, i) => `<img src="${esc(p)}" alt="${esc(it.name)} 교실 ${i + 1}"${i ? ' loading="lazy"' : ""}${i === 0 ? ' class="show"' : ""}>`).join("") : `<span class="card-icon">${esc(it.icon)}</span>`}
+          ${ps.length > 1 ? `<span class="pic-count">📷 ${ps.length}장</span><span class="dots">${ps.map((_, i) => `<i${i === 0 ? ' class="on"' : ""}></i>`).join("")}</span>` : ""}
+        </div>
         <div class="card-body"><h4>${esc(it.icon)} ${esc(it.name)} <span class="age">${esc(it.age)}</span></h4><p>${esc(it.text)}</p></div>
-      </div>`).join("")}</div>
+      </div>`; }).join("")}</div>
     </div></section>`,
   });
 }
@@ -265,13 +268,47 @@ const io = new IntersectionObserver((entries) => {
 document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
 const lb = document.getElementById("lightbox");
+let lbPics = [], lbIdx = 0, lbText = "";
+const lbShow = () => {
+  lb.querySelector("img").src = lbPics[lbIdx];
+  lb.querySelector("p").textContent = lbPics.length > 1 ? `${lbText}  ${lbIdx + 1} / ${lbPics.length}` : lbText;
+  lb.classList.toggle("multi", lbPics.length > 1);
+};
+const lbMove = (d) => { if (lbPics.length > 1) { lbIdx = (lbIdx + d + lbPics.length) % lbPics.length; lbShow(); } };
+const lbClose = () => lb.classList.remove("open");
 document.querySelectorAll(".zoom").forEach((el) => el.addEventListener("click", () => {
-  lb.querySelector("img").src = el.dataset.src;
-  lb.querySelector("p").textContent = el.dataset.text;
+  lbPics = el.dataset.photos ? JSON.parse(el.dataset.photos) : [el.dataset.src];
+  const cur = el.querySelector(".card-img img.show");
+  lbIdx = cur ? Math.max(0, [...el.querySelectorAll(".card-img img")].indexOf(cur)) : 0;
+  lbText = el.dataset.text;
+  lbShow();
   lb.classList.add("open");
 }));
-lb.addEventListener("click", () => lb.classList.remove("open"));
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") { lb.classList.remove("open"); closePopup(); } });
+lb.querySelector(".lb-prev").addEventListener("click", (e) => { e.stopPropagation(); lbMove(-1); });
+lb.querySelector(".lb-next").addEventListener("click", (e) => { e.stopPropagation(); lbMove(1); });
+lb.querySelector("img").addEventListener("click", (e) => { if (lbPics.length > 1) { e.stopPropagation(); lbMove(1); } });
+lb.addEventListener("click", lbClose);
+let tx = null;
+lb.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener("touchend", (e) => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) lbMove(dx < 0 ? 1 : -1); tx = null; });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") { lbClose(); closePopup(); }
+  if (lb.classList.contains("open") && e.key === "ArrowRight") lbMove(1);
+  if (lb.classList.contains("open") && e.key === "ArrowLeft") lbMove(-1);
+});
+
+// 반 카드: 사진이 여러 장이면 차례로 바뀌기
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.querySelectorAll(".card-img.slides").forEach((box, n) => {
+    const imgs = [...box.querySelectorAll("img")], dots = [...box.querySelectorAll(".dots i")];
+    let i = 0;
+    setTimeout(() => setInterval(() => {
+      imgs[i].classList.remove("show"); dots[i].classList.remove("on");
+      i = (i + 1) % imgs.length;
+      imgs[i].classList.add("show"); dots[i].classList.add("on");
+    }, 3500), n * 700);
+  });
+}
 
 /* ---------- 처음 열 때 안내창 (아이사랑) ---------- */
 let closePopup = () => {};

@@ -109,13 +109,14 @@ const SITE = {
     label: "반 소개",
     title: "숲에서 별이 될 때까지\n다섯 개의 하늘반",
     text: "아이들은 한 해 한 해 자라며 다음 반으로 나아갑니다.",
-    // photo 에 교실 사진을 넣으면 사진이, "" 로 비우면 아이콘이 나옵니다
+    // photos 에 교실 사진을 여러 장 넣을 수 있어요 (카드에서 차례로 바뀌고, 누르면 넘겨 볼 수 있어요)
+    // 사진이 없으면 photos: [] 로 비우면 아이콘이 나옵니다
     items: [
-      { icon: "🌿", name: "하늘숲반", age: "1세", text: "숲처럼 포근한 첫 교실", photo: "images/class-soop.jpg" },
-      { icon: "🌱", name: "하늘꿈반", age: "2세", text: "작은 꿈이 싹트는 교실", photo: "images/class-kkum.jpg" },
-      { icon: "💧", name: "하늘샘반", age: "3세", text: "샘물처럼 궁금증이 퐁퐁 솟는 교실", photo: "images/class-saem.jpg" },
-      { icon: "🌈", name: "하늘빛반", age: "4세", text: "저마다의 빛깔로 빛나는 교실", photo: "images/class-bit.jpg" },
-      { icon: "⭐", name: "하늘별반", age: "5세", text: "별처럼 스스로 빛나는 교실", photo: "images/class-byeol.jpg" },
+      { icon: "🌿", name: "하늘숲반", age: "1세", text: "숲처럼 포근한 첫 교실", photos: ["images/class-soop.jpg"] },
+      { icon: "🌱", name: "하늘꿈반", age: "2세", text: "작은 꿈이 싹트는 교실", photos: ["images/class-kkum-1.jpg", "images/class-kkum-2.jpg"] },
+      { icon: "💧", name: "하늘샘반", age: "3세", text: "샘물처럼 궁금증이 퐁퐁 솟는 교실", photos: ["images/class-saem.jpg"] },
+      { icon: "🌈", name: "하늘빛반", age: "4세", text: "저마다의 빛깔로 빛나는 교실", photos: ["images/class-bit.jpg"] },
+      { icon: "⭐", name: "하늘별반", age: "5세", text: "별처럼 스스로 빛나는 교실", photos: ["images/class-byeol-1.jpg", "images/class-byeol-2.jpg", "images/class-byeol-3.jpg"] },
     ],
   },
 
