@@ -2,148 +2,218 @@
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const S = SITE;
+const on = (k) => S[k] && S[k].show;
+const tel = (p) => `tel:${String(p).replace(/[^0-9]/g, "")}`;
+const instaId = S.links.instagram ? S.links.instagram.replace(/\/+$/, "").split("/").pop() : "";
+const ext = 'target="_blank" rel="noopener"';
 
-function head(icon, title, text) {
-  return `<div class="sec-head reveal"><div class="icon">${icon}</div><h2>${esc(title)}</h2>${text ? `<p>${esc(text)}</p>` : ""}</div>`;
+// 칸 머리: 작은 이름표 + 큰 제목 + 설명
+function head(label, title, text) {
+  return `<div class="sec-head reveal">
+    ${label ? `<span class="pill">${esc(label)}</span>` : ""}
+    <h2>${esc(title)}</h2>
+    ${text ? `<p>${esc(text)}</p>` : ""}
+  </div>`;
 }
+
+const btn = {
+  phone: (t = "전화 문의") => S.phone ? `<a class="btn btn-peach" href="${tel(S.phone)}">📞 ${esc(t)}</a>` : "",
+  insta: (t = "인스타그램 보기") => S.links.instagram ? `<a class="btn btn-white" href="${esc(S.links.instagram)}" ${ext}>📸 ${esc(t)}</a>` : "",
+  waitlist: (t = "아이사랑 입소대기") => S.links.waitlist ? `<a class="btn btn-mint" href="${esc(S.links.waitlist)}" ${ext}>🖥 ${esc(t)}</a>` : "",
+  bot: (t = "양육상담 하늘이") => on("chatbot") && S.chatbot.link ? `<a class="btn btn-sky" href="${esc(S.chatbot.link)}" ${ext}>💬 ${esc(t)}</a>` : "",
+};
 
 const sections = [];
 
-// 맨 위 큰 사진
-sections.push({
-  id: "top", menu: "홈",
-  html: `<section class="hero" id="top">
-    <div class="hero-bg" style="background-image:url('${esc(S.hero.photo)}')"></div>
-    <div class="wrap">
-      <h1>${esc(S.hero.title)}</h1>
-      <p>${esc(S.hero.text)}</p>
-      <div class="hero-btns">
-        ${S.enroll.show ? `<a class="btn btn-main" href="#enroll">${esc(S.hero.button1)} 🌿</a>` : ""}
-        ${S.facility && S.facility.show ? `<a class="btn btn-ghost" href="#facility">${esc(S.hero.button2)} ♡</a>` : S.story.show ? `<a class="btn btn-ghost" href="#story">${esc(S.hero.button2)} ♡</a>` : ""}
-      </div>
-    </div>
-    <a class="scroll-hint" href="#${S.day.show ? "day" : "about"}" aria-label="아래로">⌄</a>
-  </section>`,
-});
-
-if (S.day.show) sections.push({
-  id: "day", menu: S.day.title,
-  html: `<section class="block" id="day"><div class="wrap">
-    ${head("🌱", S.day.title, S.day.text)}
-    <div class="day-photos reveal">${S.day.photos.map((p) => `<img src="${esc(p)}" alt="">`).join("")}</div>
-    <div class="badges reveal">${S.day.badges.map((b) => `<span class="badge">${esc(b.icon)} ${esc(b.text)}</span>`).join("")}</div>
-  </div></section>`,
-});
-
-if (S.about.show) sections.push({
-  id: "about", menu: S.about.title,
-  html: `<section class="block" id="about"><div class="wrap">
-    ${head("🏡", S.about.title)}
-    <div class="about">
-      <div class="about-photo reveal"><img src="${esc(S.about.photo)}" alt=""></div>
-      <div class="reveal">
-        <h3>${esc(S.about.headline)}</h3>
-        <p class="greet">${esc(S.about.greeting)}</p>
-        <p class="sign">— ${esc(S.about.sign)}</p>
-        ${S.links.instagram ? `<div class="insta-wrap"><a class="insta-btn" href="${esc(S.links.instagram)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>인스타그램에서 더 보기 <small>@${esc(S.links.instagram.replace(/\/+$/, "").split("/").pop())}</small></a></div>` : ""}
-        <div class="highlights">${S.about.highlights.map((h) => `<div class="hl"><b>${esc(h.big)}</b><span>${esc(h.small)}</span></div>`).join("")}</div>
-      </div>
-    </div>
-  </div></section>`,
-});
-
-if (S.facility && S.facility.show) sections.push({
-  id: "facility", menu: S.facility.title,
-  html: `<section class="block" id="facility"><div class="wrap">
-    ${head("🏫", S.facility.title, S.facility.text)}
-    <div class="stories facility-grid">${S.facility.items.map((it) => `<div class="story reveal" data-src="${esc(it.photo)}" data-text="${esc(it.name)}">
-      <img src="${esc(it.photo)}" alt="${esc(it.name)}"><p><b>${esc(it.name)}</b>${it.text ? `<br><small>${esc(it.text)}</small>` : ""}</p></div>`).join("")}</div>
-  </div></section>`,
-});
-
-if (S.classes && S.classes.show) sections.push({
-  id: "classes", menu: "반 소개",
-  html: `<section class="block" id="classes"><div class="wrap">
-    ${head("🏷️", S.classes.title, S.classes.text)}
-    <div class="programs class-grid">${S.classes.items.map((c) => `<div class="prog reveal${c.photo ? " zoom" : ""}" data-src="${esc(c.photo)}" data-text="${esc(c.name)} (${esc(c.age)})">
-      <div class="prog-img">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)} 교실">` : esc(c.icon)}</div>
-      <div class="prog-body"><h4>${esc(c.icon)} ${esc(c.name)} <span class="class-age">${esc(c.age)}</span></h4><p>${esc(c.text)}</p></div>
-    </div>`).join("")}</div>
-  </div></section>`,
-});
-
-if (S.edu.show) sections.push({
-  id: "edu", menu: S.edu.title,
-  html: `<section class="block" id="edu"><div class="wrap">
-    ${head("🌳", S.edu.title)}
-    <p class="quote reveal">${esc(S.edu.quote)}</p>
-    <p class="edu-text reveal">${esc(S.edu.text)}</p>
-    <div class="programs">${S.edu.programs.map((p) => `<div class="prog reveal">
-      <div class="prog-img">${p.photo ? `<img src="${esc(p.photo)}" alt="">` : esc(p.icon)}</div>
-      <div class="prog-body"><h4>${esc(p.icon)} ${esc(p.name)}</h4><p>${esc(p.text)}</p></div>
-    </div>`).join("")}</div>
-  </div></section>`,
-});
-
-if (S.routine.show) sections.push({
-  id: "routine", menu: "하루 일과",
-  html: `<section class="block" id="routine"><div class="wrap">
-    ${head("⏰", S.routine.title)}
-    <div class="routine">${S.routine.items.map((r) => `<div class="r-item reveal">
-      <div class="r-time">${esc(r.time)}</div><div class="r-dot"></div>
-      <div class="r-body"><b>${esc(r.name)}</b><p>${esc(r.text)}</p></div>
-    </div>`).join("")}</div>
-  </div></section>`,
-});
-
-if (S.story.show) sections.push({
-  id: "story", menu: S.story.title,
-  html: `<section class="block" id="story"><div class="wrap">
-    ${head("📷", S.story.title)}
-    <div class="stories">${S.story.items.map((it) => `<div class="story reveal" data-src="${esc(it.photo)}" data-text="${esc(it.text)}">
-      <img src="${esc(it.photo)}" alt="${esc(it.text)}"><p>${esc(it.text)}</p></div>`).join("")}</div>
-    ${S.story.moreLink ? `<div class="more"><a class="btn btn-main" href="${esc(S.story.moreLink)}" target="_blank" rel="noopener">${esc(S.story.moreText)} →</a></div>` : ""}
-  </div></section>`,
-});
-
-if (S.enroll.show) sections.push({
-  id: "enroll", menu: S.enroll.title,
-  html: `<section class="block" id="enroll"><div class="wrap">
-    ${head("🎒", S.enroll.title)}
-    <div class="enroll">
-      <div class="e-card reveal"><h4>보육 시간</h4>
-        <div class="hours">${S.enroll.hours.map((h) => `<div><span>${esc(h.name)}</span><b>${esc(h.time)}</b></div>`).join("")}</div>
-      </div>
-      <div class="e-card reveal"><h4>입소 절차</h4>
-        <div class="steps">${S.enroll.steps.map((s) => `<span class="step">${esc(s)}</span>`).join('<span class="arrow">→</span>')}</div>
-        <p class="e-note">${esc(S.enroll.note)}</p>
-        <div class="call">
-          ${S.phone ? `<a class="btn btn-main" href="tel:${esc(S.phone.replace(/[^0-9]/g, ""))}">📞 ${esc(S.phone)}</a>` : ""}
-          ${S.links.waitlist ? `<a class="btn btn-ghost" style="border:1px solid var(--line)" href="${esc(S.links.waitlist)}" target="_blank" rel="noopener">입소대기 신청</a>` : ""}
-        </div>
-      </div>
-    </div>
-  </div></section>`,
-});
-
-if (S.location.show) {
-  const q = encodeURIComponent(S.location.mapPlace ? `서귀포 ${S.location.mapPlace}` : S.address);
+/* ---------- 맨 위 첫 화면 ---------- */
+{
+  const h = S.hero;
+  const name = esc(S.name);
+  const hl = h.highlight && S.name.includes(h.highlight)
+    ? name.replace(esc(h.highlight), `<em>${esc(h.highlight)}</em>`) : name;
   sections.push({
-    id: "location", menu: S.location.title,
-    html: `<section class="block" id="location"><div class="wrap">
-      ${head("📍", S.location.title)}
+    id: "top", menu: "",
+    html: `<section class="hero" id="top">
+      <div class="hero-bg" style="background-image:url('${esc(h.photo)}')"></div>
+      <div class="hero-tint"></div>
+      <div class="wrap hero-in">
+        ${h.badge ? `<span class="hero-badge">${esc(h.badge)}</span>` : ""}
+        <h1>${S.subName ? `${esc(S.subName)} ` : ""}${hl}</h1>
+        ${h.slogan ? `<p class="hero-slogan">${esc(h.slogan)}</p>` : ""}
+        ${h.text ? `<p class="hero-text">${esc(h.text)}</p>` : ""}
+        ${h.sub ? `<p class="hero-sub">${esc(h.sub)}</p>` : ""}
+        <div class="hero-btns">${btn.phone()}${btn.waitlist()}${btn.insta()}</div>
+      </div>
+    </section>`,
+  });
+}
+
+/* ---------- 어린이집 소개 ---------- */
+if (on("about")) {
+  const a = S.about;
+  const info = [
+    S.hours && { icon: "🕐", k: "운영 시간", v: S.hours },
+    { icon: "🏫", k: "유형", v: `${S.subName ? S.subName + " " : ""}어린이집` },
+    S.address && { icon: "📍", k: "주소", v: S.address, note: on("location") ? S.location.mapPlaceNote : "" },
+    S.phone && { icon: "📞", k: "대표 전화", v: S.phone, href: tel(S.phone) },
+  ].filter(Boolean);
+  sections.push({
+    id: "about", menu: "소개",
+    html: `<section class="block" id="about"><div class="wrap about">
+      <div class="about-photo reveal"><img src="${esc(a.photo)}" alt="${esc(S.name)}"></div>
+      <div class="about-body reveal">
+        <span class="pill">${esc(a.label)}</span>
+        <h2>${esc(a.title)}</h2>
+        ${a.text.map((t) => `<p>${esc(t)}</p>`).join("")}
+        <div class="info-grid">${info.map((i) => `<div class="info-card">
+          <span class="ic">${i.icon}</span><small>${esc(i.k)}</small>
+          ${i.href ? `<a href="${i.href}"><b class="hl">${esc(i.v)}</b></a>` : `<b>${esc(i.v)}</b>`}
+          ${i.note ? `<span class="note">${esc(i.note)}</span>` : ""}
+        </div>`).join("")}</div>
+      </div>
+    </div></section>`,
+  });
+}
+
+/* ---------- 원장 인사말 ---------- */
+if (on("greeting")) {
+  const g = S.greeting;
+  sections.push({
+    id: "greeting", menu: "인사말",
+    html: `<section class="block bg-peach" id="greeting"><div class="wrap">
+      ${head(g.label, g.title)}
+      <div class="greet-card reveal">
+        <h3>${esc(g.headline)}</h3>
+        <p class="greet-text">${esc(g.text)}</p>
+        <p class="sign">— ${esc(g.sign)}</p>
+        ${S.links.instagram ? `<div class="greet-insta"><a class="insta-btn" href="${esc(S.links.instagram)}" ${ext}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>인스타그램에서 더 보기 <small>@${esc(instaId)}</small></a></div>` : ""}
+      </div>
+      <div class="value-grid">${g.highlights.map((h) => `<div class="value-card reveal">
+        <span class="ic">${esc(h.icon)}</span><b>${esc(h.big)}</b><span>${esc(h.small)}</span>
+      </div>`).join("")}</div>
+    </div></section>`,
+  });
+}
+
+/* ---------- 시설 안내 ---------- */
+if (on("facility")) {
+  const f = S.facility;
+  sections.push({
+    id: "facility", menu: "시설안내",
+    html: `<section class="block" id="facility"><div class="wrap">
+      ${head(f.label, f.title, f.text)}
+      <div class="cards">${f.items.map((it) => `<div class="card zoom reveal" data-src="${esc(it.photo)}" data-text="${esc(it.name)}">
+        <div class="card-img"><img src="${esc(it.photo)}" alt="${esc(it.name)}"></div>
+        <div class="card-body"><h4>${esc(it.name)}</h4>${it.text ? `<p>${esc(it.text)}</p>` : ""}</div>
+      </div>`).join("")}</div>
+    </div></section>`,
+  });
+}
+
+/* ---------- 반 소개 ---------- */
+if (on("classes")) {
+  const c = S.classes;
+  sections.push({
+    id: "classes", menu: "반 소개",
+    html: `<section class="block bg-mint" id="classes"><div class="wrap">
+      ${head(c.label, c.title, c.text)}
+      <div class="cards">${c.items.map((it) => `<div class="card reveal${it.photo ? " zoom" : ""}" data-src="${esc(it.photo)}" data-text="${esc(it.name)} (${esc(it.age)})">
+        <div class="card-img">${it.photo ? `<img src="${esc(it.photo)}" alt="${esc(it.name)} 교실">` : `<span class="card-icon">${esc(it.icon)}</span>`}</div>
+        <div class="card-body"><h4>${esc(it.icon)} ${esc(it.name)} <span class="age">${esc(it.age)}</span></h4><p>${esc(it.text)}</p></div>
+      </div>`).join("")}</div>
+    </div></section>`,
+  });
+}
+
+/* ---------- 놀이 현황 (인스타그램) ---------- */
+if (on("play")) {
+  const p = S.play;
+  let feed;
+  if (p.elfsightId) {
+    feed = `<div class="feed reveal"><div class="elfsight-app-${esc(p.elfsightId)}" data-elfsight-app-lazy></div></div>`;
+  } else if (p.posts && p.posts.length) {
+    feed = `<div class="posts">${p.posts.map((u) => `<div class="post reveal"><blockquote class="instagram-media" data-instgrm-permalink="${esc(u)}" data-instgrm-version="14"><a href="${esc(u)}" ${ext}>인스타그램에서 보기</a></blockquote></div>`).join("")}</div>`;
+  } else {
+    feed = `<a class="insta-card reveal" href="${esc(S.links.instagram)}" ${ext}>
+      <span class="insta-logo"><svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg></span>
+      <b>@${esc(instaId)}</b>
+      <span>${esc(S.name)}의 놀이 현황을<br>인스타그램에서 매일 만나 보세요</span>
+      <span class="insta-go">팔로우하고 놀이 소식 받기 →</span>
+    </a>`;
+  }
+  sections.push({
+    id: "play", menu: "놀이 현황", hl: true,
+    html: `<section class="block bg-lav" id="play"><div class="wrap">
+      ${head(p.label, p.title, p.text)}
+      ${feed}
+      ${S.links.instagram ? `<div class="center-btns">${btn.insta("인스타그램에서 더 보기")}</div>` : ""}
+    </div></section>`,
+  });
+}
+
+/* ---------- 입소 안내 ---------- */
+if (on("enroll")) {
+  const e = S.enroll;
+  sections.push({
+    id: "enroll", menu: "입소안내", hl: true,
+    html: `<section class="block" id="enroll"><div class="wrap">
+      ${head(e.label, e.title, e.text)}
+      <div class="steps">${e.steps.map((s, i) => `<div class="step reveal">
+        <span class="num">${i + 1}</span><h4>${esc(s.name)}</h4><p>${esc(s.text)}</p>
+      </div>`).join("")}</div>
+      <div class="hours-card reveal">
+        <h4>🕐 보육 시간</h4>
+        <div class="hours">${e.hours.map((h) => `<div><span>${esc(h.name)}</span><b>${esc(h.time)}</b></div>`).join("")}</div>
+        ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
+      </div>
+      <div class="center-btns">${btn.waitlist("아이사랑 바로가기")}${btn.phone("입소 상담 전화")}</div>
+    </div></section>`,
+  });
+}
+
+/* ---------- 오시는 길 ---------- */
+if (on("location")) {
+  const L = S.location;
+  const q = encodeURIComponent(L.mapPlace ? `서귀포 ${L.mapPlace}` : S.address);
+  const rows = [
+    { icon: "📍", k: "주소", v: S.address, note: L.mapPlaceNote },
+    S.phone && { icon: "📞", k: "대표 전화", v: S.phone, href: tel(S.phone) },
+    S.fax && { icon: "📠", k: "팩스", v: S.fax },
+    S.hours && { icon: "🕐", k: "운영 시간", v: S.hours },
+  ].filter(Boolean);
+  sections.push({
+    id: "location", menu: "오시는 길",
+    html: `<section class="block bg-sky" id="location"><div class="wrap">
+      ${head(L.label, L.title)}
       <div class="loc">
-        ${S.location.mapImage ? `<a class="map map-img reveal" href="https://map.naver.com/p/search/${q}" target="_blank" rel="noopener" title="네이버지도에서 크게 보기"><img src="${esc(S.location.mapImage)}" alt="${esc(S.name)} 오시는 길 약도"><span class="map-tip">눌러서 지도 앱으로 보기</span></a>` : S.location.showMap ? `<div class="map map-live reveal"><iframe loading="lazy" src="https://maps.google.com/maps?q=${q}&z=17&output=embed" title="지도"></iframe>
-          <div class="map-bubble" aria-hidden="true"><span class="mb-sun">☀️</span><span class="mb-cloud">☁️</span>${S.location.mapLabel ? `<small>${esc(S.location.mapLabel)}</small>` : ""}<b>${esc(S.name)}</b>${S.location.mapPlaceNote ? `<em>${esc(S.location.mapPlaceNote)}</em>` : ""}<span class="mb-sprout">🌱</span></div></div>` : ""}
         <div class="loc-info reveal">
-          <div class="loc-row"><small>주소</small><b>${esc(S.address)}</b>${S.location.mapPlaceNote ? `<span class="loc-note">${esc(S.location.mapPlaceNote)}</span>` : ""}</div>
-          <div class="loc-row"><small>전화</small><b>${esc(S.phone)}</b></div>
-          ${S.fax ? `<div class="loc-row"><small>팩스</small><b>${esc(S.fax)}</b></div>` : ""}
+          ${rows.map((r) => `<div class="loc-row"><span class="ic">${r.icon}</span><div><small>${esc(r.k)}</small>
+            ${r.href ? `<a href="${r.href}"><b class="hl">${esc(r.v)}</b></a>` : `<b>${esc(r.v)}</b>`}
+            ${r.note ? `<span class="note">${esc(r.note)}</span>` : ""}</div></div>`).join("")}
           <div class="map-links">
-            <a href="https://map.kakao.com/?q=${q}" target="_blank" rel="noopener">카카오맵으로 보기</a>
-            <a href="https://map.naver.com/p/search/${q}" target="_blank" rel="noopener">네이버지도로 보기</a>
+            <a class="btn btn-kakao btn-sm" href="https://map.kakao.com/?q=${q}" ${ext}>🗺 카카오맵 보기</a>
+            <a class="btn btn-naver btn-sm" href="https://map.naver.com/p/search/${q}" ${ext}>🗺 네이버지도 보기</a>
           </div>
         </div>
+        ${L.showMap ? `<div class="map reveal"><iframe loading="lazy" src="https://maps.google.com/maps?q=${q}&z=17&output=embed" title="지도"></iframe>
+          <div class="map-bubble" aria-hidden="true"><span class="mb-sun">☀️</span><span class="mb-cloud">☁️</span>${L.mapLabel ? `<small>${esc(L.mapLabel)}</small>` : ""}<b>${esc(S.name)}</b>${L.mapPlaceNote ? `<em>${esc(L.mapPlaceNote)}</em>` : ""}<span class="mb-sprout">🌱</span></div></div>` : ""}
+      </div>
+    </div></section>`,
+  });
+}
+
+/* ---------- 문의하기 ---------- */
+if (on("contact")) {
+  const c = S.contact;
+  sections.push({
+    id: "contact", menu: "문의",
+    html: `<section class="block bg-mint" id="contact"><div class="wrap">
+      <div class="contact-box reveal">
+        <span class="pill">${esc(c.label)}</span>
+        <h2>${esc(c.title)}</h2>
+        <p>${esc(c.text)}</p>
+        <div class="center-btns">${btn.phone()}${btn.insta("인스타그램 DM")}${btn.bot()}</div>
+        <p class="contact-nums">대표전화 <b>${esc(S.phone)}</b>${S.fax ? ` <span>|</span> 팩스 <b>${esc(S.fax)}</b>` : ""}</p>
       </div>
     </div></section>`,
   });
@@ -151,36 +221,42 @@ if (S.location.show) {
 
 /* ---------- 화면에 그리기 ---------- */
 document.getElementById("main").innerHTML = sections.map((s) => s.html).join("");
-document.getElementById("navList").innerHTML = sections.map((s) => `<li><a href="#${s.id}">${esc(s.menu)}</a></li>`).join("");
+document.getElementById("navList").innerHTML = sections.filter((s) => s.menu)
+  .map((s) => `<li><a href="#${s.id}"${s.hl ? ' class="nav-hl"' : ""}>${esc(s.menu)}</a></li>`).join("");
+document.getElementById("navCta").innerHTML = S.phone ? `<a class="btn btn-peach btn-sm" href="${tel(S.phone)}">📞 전화 문의</a>` : "";
 
 document.title = S.name;
 document.querySelector('meta[name="description"]').content = S.description;
-document.querySelector('meta[property="og:title"]').content = S.name;
-document.querySelector('meta[property="og:description"]').content = S.description;
 document.getElementById("brandName").textContent = S.name;
 document.getElementById("brandSub").textContent = S.subName;
 if (S.logo) document.getElementById("brandLogo").innerHTML = `<img src="${esc(S.logo)}" alt="">`;
 
-document.getElementById("footName").textContent = S.name;
-document.getElementById("footInfo").innerHTML = `${esc(S.address)}<br>☎ ${esc(S.phone)}${S.fax ? ` · 팩스 ${esc(S.fax)}` : ""}`;
-document.getElementById("footCopy").textContent = `© ${new Date().getFullYear()} ${S.name}`;
-const linkNames = { blog: "블로그", instagram: "인스타그램", cafe: "카페·밴드", waitlist: "입소대기 신청" };
-document.getElementById("footLinks").innerHTML = Object.entries(S.links)
-  .filter(([, u]) => u)
-  .map(([k, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${linkNames[k] || k}</a>`)
-  .join("");
+document.getElementById("footName").textContent = `🌱 ${S.subName ? S.subName + " " : ""}${S.name}`;
+document.getElementById("footInfo").innerHTML = `${esc(S.address)}<br>대표전화 ${esc(S.phone)}${S.fax ? ` · 팩스 ${esc(S.fax)}` : ""}`;
+document.getElementById("footCopy").textContent = `© ${new Date().getFullYear()} ${S.name}. All rights reserved.`;
+const footIcons = [
+  S.links.instagram && { u: S.links.instagram, i: "📸", t: "인스타그램" },
+  S.links.blog && { u: S.links.blog, i: "📝", t: "블로그" },
+  S.links.cafe && { u: S.links.cafe, i: "☕", t: "카페·밴드" },
+  S.links.waitlist && { u: S.links.waitlist, i: "🖥", t: "아이사랑 입소대기" },
+  S.phone && { u: tel(S.phone), i: "📞", t: "전화" },
+].filter(Boolean);
+document.getElementById("footLinks").innerHTML = footIcons
+  .map((f) => `<a href="${esc(f.u)}" ${f.u.startsWith("tel:") ? "" : ext} title="${esc(f.t)}" aria-label="${esc(f.t)}">${f.i}</a>`).join("");
+
+/* ---------- 외부 위젯 불러오기 (인스타그램) ---------- */
+const loadScript = (src) => { const s = document.createElement("script"); s.src = src; s.async = true; document.body.appendChild(s); };
+if (on("play") && S.play.elfsightId) loadScript("https://elfsightcdn.com/platform.js");
+else if (on("play") && S.play.posts && S.play.posts.length) loadScript("https://www.instagram.com/embed.js");
 
 /* ---------- 움직임 ---------- */
 const header = document.getElementById("header");
-const onScroll = () => header.classList.toggle("solid", window.scrollY > 60);
+const onScroll = () => header.classList.toggle("solid", window.scrollY > 10);
 window.addEventListener("scroll", onScroll, { passive: true });
 onScroll();
 
 const nav = document.getElementById("nav");
-document.getElementById("menuBtn").addEventListener("click", () => {
-  nav.classList.toggle("open");
-  header.classList.add("solid");
-});
+document.getElementById("menuBtn").addEventListener("click", () => nav.classList.toggle("open"));
 nav.addEventListener("click", (e) => { if (e.target.tagName === "A") nav.classList.remove("open"); });
 
 const io = new IntersectionObserver((entries) => {
@@ -189,13 +265,51 @@ const io = new IntersectionObserver((entries) => {
 document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
 const lb = document.getElementById("lightbox");
-document.querySelectorAll(".story, .prog.zoom").forEach((el) => el.addEventListener("click", () => {
+document.querySelectorAll(".zoom").forEach((el) => el.addEventListener("click", () => {
   lb.querySelector("img").src = el.dataset.src;
   lb.querySelector("p").textContent = el.dataset.text;
   lb.classList.add("open");
 }));
 lb.addEventListener("click", () => lb.classList.remove("open"));
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") lb.classList.remove("open"); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") { lb.classList.remove("open"); closePopup(); } });
+
+/* ---------- 처음 열 때 안내창 (아이사랑) ---------- */
+let closePopup = () => {};
+if (on("popup")) {
+  const P = S.popup;
+  const today = new Date().toISOString().slice(0, 10);
+  let hidden = false;
+  try { hidden = localStorage.getItem("popupHideDate") === today; } catch (e) { /* 저장 안 되는 브라우저 */ }
+  if (!hidden) {
+    const wrap = document.createElement("div");
+    wrap.className = "popup";
+    wrap.setAttribute("role", "dialog");
+    wrap.setAttribute("aria-modal", "true");
+    wrap.setAttribute("aria-label", P.title);
+    wrap.innerHTML = `<div class="popup-box">
+      <button class="popup-x" type="button" aria-label="닫기">×</button>
+      <div class="popup-art">🏡</div>
+      <span class="pill">아이사랑 보육포털</span>
+      <h3>${esc(P.title)}</h3>
+      <p>${esc(P.text)}</p>
+      <a class="btn btn-mint popup-go" href="${esc(P.link)}" ${ext}>🖥 ${esc(P.button)} →</a>
+      <div class="popup-foot">
+        <button type="button" class="popup-today">오늘 하루 보지 않기</button>
+        <button type="button" class="popup-close">닫기</button>
+      </div>
+    </div>`;
+    document.body.appendChild(wrap);
+    closePopup = () => { wrap.classList.remove("open"); setTimeout(() => wrap.remove(), 300); };
+    setTimeout(() => wrap.classList.add("open"), 400);
+    wrap.querySelector(".popup-x").addEventListener("click", closePopup);
+    wrap.querySelector(".popup-close").addEventListener("click", closePopup);
+    wrap.querySelector(".popup-today").addEventListener("click", () => {
+      try { localStorage.setItem("popupHideDate", today); } catch (e) { /* 무시 */ }
+      closePopup();
+    });
+    wrap.addEventListener("click", (e) => { if (e.target === wrap) closePopup(); });
+  }
+}
 
 /* ---------- 마우스 반짝이 (content.js 의 sparkle: true 일 때) ---------- */
 if (S.sparkle && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -228,10 +342,10 @@ if (S.sparkle && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
 }
 
 /* ---------- 양육상담 챗봇 하늘이 ---------- */
-if (S.chatbot && S.chatbot.show && S.chatbot.link) {
+if (on("chatbot") && S.chatbot.link) {
   const bot = document.createElement("div");
   bot.className = "haneul";
-  bot.innerHTML = `<a class="haneul-link" href="${esc(S.chatbot.link)}" target="_blank" rel="noopener" aria-label="양육상담 챗봇 하늘이 열기">
+  bot.innerHTML = `<a class="haneul-link" href="${esc(S.chatbot.link)}" ${ext} aria-label="양육상담 챗봇 하늘이 열기">
       <span class="haneul-bubble">${esc(S.chatbot.message)}</span>
       <img src="${esc(S.chatbot.image)}" alt="하늘이">
     </a>
